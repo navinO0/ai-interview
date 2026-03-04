@@ -83,7 +83,7 @@ export default function AITutor() {
             {/* Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 w-14 h-14 bg-primary-600 rounded-full shadow-2xl shadow-primary-600/40 flex items-center justify-center text-white hover:scale-110 transition-transform z-50"
+                className="fixed bottom-6 right-4 sm:right-6 w-12 h-12 sm:w-14 sm:h-14 bg-primary-600 rounded-full shadow-2xl shadow-primary-600/40 flex items-center justify-center text-white hover:scale-110 transition-transform z-50"
             >
                 {isOpen ? <X /> : <MessageSquare />}
             </button>
@@ -96,7 +96,7 @@ export default function AITutor() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-24 right-6 w-96 h-[500px] glass z-50 flex flex-col shadow-2xl overflow-hidden"
+                        className="fixed bottom-20 sm:bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 h-[60vh] sm:h-[500px] max-h-[80vh] glass z-50 flex flex-col shadow-2xl overflow-hidden"
                     >
                         {/* Header */}
                         <div className="p-4 border-b border-white/10 bg-primary-600/10 flex items-center justify-between">

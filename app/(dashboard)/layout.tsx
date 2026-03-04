@@ -197,7 +197,7 @@ export default function DashboardLayout({
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto p-4 md:p-8">
+            <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 md:p-8">
                 <div className="max-w-6xl mx-auto h-full flex flex-col pt-4 md:pt-0">
                     <Suspense fallback={null}>
                         <Breadcrumbs />

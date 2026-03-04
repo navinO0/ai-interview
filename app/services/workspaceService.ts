@@ -13,8 +13,8 @@ const workspaceService = {
         return response.data;
     },
 
-    async createWorkspace(name: string, description?: string): Promise<Workspace> {
-        const response = await api.post('/workspaces', { name, description });
+    async createWorkspace(data: any): Promise<Workspace> {
+        const response = await api.post('/workspaces', data);
         return response.data;
     },
 

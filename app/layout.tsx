@@ -8,9 +8,33 @@ import SessionExpiredModal from './components/SessionExpiredModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-    title: 'AI Coach — Learn Anything',
-    description: 'Master any topic with personalized paths, practice, and real-time feedback.',
+export const metadata: import('next').Metadata = {
+    title: {
+        template: '%s | AI Interview Coach',
+        default: 'AI Interview Coach — Master Any Role',
+    },
+    description: 'Master any technical or behavioral interview with personalized learning paths, real-time AI mock interviews, and actionable feedback.',
+    keywords: ['interview prep', 'AI mock interview', 'coding prep', 'system design', 'learning paths', 'tech interview'],
+    authors: [{ name: 'Navin' }],
+    creator: 'Navin',
+    openGraph: {
+        type: 'website',
+        locale: 'en_US',
+        url: 'https://app.navin.lol',
+        title: 'AI Interview Coach — Learn Anything',
+        description: 'Master any topic with personalized paths, practice, and real-time feedback from our AI.',
+        siteName: 'AI Interview Coach',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'AI Interview Coach',
+        description: 'Level up your interview skills with personalized AI-driven prep.',
+    },
+    icons: {
+        icon: '/icon.png',
+        shortcut: '/icon.png',
+        apple: '/icon.png',
+    },
 }
 
 import { Toaster } from 'react-hot-toast';

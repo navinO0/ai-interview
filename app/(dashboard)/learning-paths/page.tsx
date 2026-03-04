@@ -337,7 +337,7 @@ function WorkspacesContent() {
                         />
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="bg-secondary p-10 rounded-3xl border border-white/10 w-full max-w-lg relative z-10 glass shadow-2xl"
+                            className="bg-secondary p-6 md:p-10 rounded-3xl border border-white/10 w-full max-w-lg relative z-10 glass shadow-2xl max-h-[90vh] overflow-y-auto"
                         >
                             <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 text-gray-500 hover:text-white"><X size={24} /></button>
                             <h2 className="text-2xl font-black mb-1">Create Workspace</h2>

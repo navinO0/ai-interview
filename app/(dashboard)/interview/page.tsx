@@ -213,12 +213,12 @@ function InterviewContent() {
                         exit={{ opacity: 0, scale: 1.05 }}
                         className="space-y-12"
                     >
-                        <div className="glass p-12 text-center rounded-3xl">
-                            <div className="w-20 h-20 bg-primary-600/20 rounded-full flex items-center justify-center mx-auto mb-8">
+                        <div className="glass p-6 md:p-12 text-center rounded-3xl">
+                            <div className="w-20 h-20 bg-primary-600/20 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8">
                                 <Play className="text-primary-500 fill-primary-500" size={32} />
                             </div>
-                            <h1 className="text-4xl font-black mb-4 tracking-tight">Adaptive Interview Prep</h1>
-                            <p className="text-gray-400 mb-10 text-lg max-w-lg mx-auto leading-relaxed">
+                            <h1 className="text-3xl md:text-4xl font-black mb-4 tracking-tight">Adaptive Interview Prep</h1>
+                            <p className="text-gray-400 mb-8 md:mb-10 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
                                 Real-time AI evaluation using context from your resume, learner level, and performance.
                             </p>
                             <button
@@ -268,18 +268,18 @@ function InterviewContent() {
                         key="config"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="glass p-10 max-w-2xl mx-auto rounded-3xl"
+                        className="glass p-5 md:p-10 max-w-2xl mx-auto rounded-2xl md:rounded-3xl"
                     >
-                        <h2 className="text-2xl font-black mb-8">Session Configuration</h2>
-                        <div className="space-y-6">
-                            <div className="grid grid-cols-2 gap-6">
+                        <h2 className="text-xl md:text-2xl font-black mb-6 md:mb-8">Session Configuration</h2>
+                        <div className="space-y-4 md:space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Topic Area</label>
                                     <input
                                         type="text"
                                         value={config.topic}
                                         onChange={(e) => setConfig({ ...config, topic: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-primary-500 outline-none font-medium"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -289,7 +289,7 @@ function InterviewContent() {
                                         <select
                                             value={config.learner_level}
                                             onChange={(e) => setConfig({ ...config, learner_level: e.target.value })}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-10 py-4 focus:border-primary-500 outline-none appearance-none font-medium"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 md:py-4 text-sm md:text-base focus:border-primary-500 outline-none appearance-none font-medium"
                                         >
                                             {learnerLevels.map(l => (
                                                 <option key={l} value={l} className="bg-black text-white">{l}</option>
@@ -300,7 +300,7 @@ function InterviewContent() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Target Role</label>
                                     <input
@@ -309,7 +309,7 @@ function InterviewContent() {
                                         value={config.role}
                                         onChange={(e) => setConfig({ ...config, role: e.target.value })}
                                         placeholder="Enter target role..."
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-primary-500 outline-none font-medium"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium"
                                     />
                                     <datalist id="roles-list">
                                         {['Backend Engineer', 'Frontend Engineer', 'Fullstack Engineer', 'Mobile Developer', 'DevOps Engineer', 'Data Scientist', 'SRE', 'Security Engineer', 'Product Manager'].map(r => (
@@ -319,11 +319,11 @@ function InterviewContent() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Difficulty</label>
+                                        <label className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">Difficulty</label>
                                         <select
                                             value={config.difficulty}
                                             onChange={(e) => setConfig({ ...config, difficulty: e.target.value })}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-primary-500 outline-none font-medium appearance-none"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium appearance-none"
                                         >
                                             {['Beginner', 'Medium', 'Hard', 'Expert'].map(d => (
                                                 <option key={d} value={d} className="bg-black text-white">{d}</option>
@@ -339,7 +339,7 @@ function InterviewContent() {
                                                 const val = e.target.value;
                                                 setConfig({ ...config, numQuestions: val === '' ? 0 : parseInt(val) })
                                             }}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-primary-500 outline-none font-medium"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium"
                                             placeholder="Count"
                                         />
                                     </div>
@@ -357,7 +357,7 @@ function InterviewContent() {
                                         <button
                                             key={opt.id}
                                             onClick={() => setConfig({ ...config, [opt.id]: !config[opt.id] })}
-                                            className={`flex items-center justify-center gap-2 p-4 rounded-xl border transition-all text-xs font-bold ${config[opt.id] ? 'bg-primary-600/20 border-primary-500 text-white' : 'bg-white/5 border-white/5 text-gray-500 hover:text-white hover:bg-white/10'}`}
+                                            className={`flex items-center justify-center gap-2 p-3 md:p-4 rounded-xl border transition-all text-[10px] md:text-xs font-bold ${config[opt.id] ? 'bg-primary-600/20 border-primary-500 text-white' : 'bg-white/5 border-white/5 text-gray-500 hover:text-white hover:bg-white/10'}`}
                                         >
                                             {opt.icon} {opt.label}
                                         </button>
@@ -371,7 +371,7 @@ function InterviewContent() {
                                     value={config.jd}
                                     onChange={(e) => setConfig({ ...config, jd: e.target.value })}
                                     placeholder="Paste the Job Description here to get specific questions..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 h-32 focus:border-primary-500 outline-none font-medium resize-none text-sm"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 h-24 md:h-32 focus:border-primary-500 outline-none font-medium resize-none text-xs md:text-sm"
                                 />
                             </div>
 
@@ -384,14 +384,14 @@ function InterviewContent() {
                                 </label>
                             </div>
 
-                            <div className="pt-6 flex gap-4">
-                                <button onClick={() => setStep('idle')} className="flex-1 py-4 bg-white/5 hover:bg-white/10 rounded-xl font-bold transition-all text-sm uppercase tracking-widest">Cancel</button>
+                            <div className="pt-4 md:pt-6 flex flex-col md:flex-row gap-3 md:gap-4">
+                                <button onClick={() => setStep('idle')} className="w-full md:flex-1 py-3 md:py-4 bg-white/5 hover:bg-white/10 rounded-xl font-bold transition-all text-xs md:text-sm uppercase tracking-widest hidden md:block">Cancel</button>
                                 <button
                                     onClick={handleInitialize}
                                     disabled={isLoading}
-                                    className="flex-[2] py-4 bg-primary-600 hover:bg-primary-500 rounded-xl font-bold transition-all text-sm uppercase tracking-widest disabled:opacity-50 flex items-center justify-center shadow-lg shadow-primary-600/30"
+                                    className="w-full md:flex-[2] py-3 md:py-4 bg-primary-600 hover:bg-primary-500 rounded-xl font-bold transition-all text-xs md:text-sm uppercase tracking-widest disabled:opacity-50 flex items-center justify-center shadow-lg shadow-primary-600/30"
                                 >
-                                    {isLoading ? <RefreshCw className="animate-spin mr-2" size={18} /> : 'Start Interview'}
+                                    {isLoading ? <RefreshCw className="animate-spin mr-2" size={16} /> : 'Start Interview'}
                                 </button>
                             </div>
                         </div>
@@ -412,17 +412,17 @@ function InterviewContent() {
                             <span>Question {currentQuestionIndex + 1} of {config.numQuestions}</span>
                         </div>
 
-                        <div className="glass p-10 border-l-4 border-primary-500 rounded-3xl space-y-8 shadow-2xl">
-                            <h2 className="text-2xl font-bold leading-relaxed">{currentQuestion?.question_text}</h2>
+                        <div className="glass p-6 md:p-10 border-l-4 border-primary-500 rounded-3xl space-y-6 md:space-y-8 shadow-2xl">
+                            <h2 className="text-xl md:text-2xl font-bold leading-relaxed">{currentQuestion?.question_text}</h2>
                             <textarea
                                 value={answer}
                                 onChange={(e) => setAnswer(e.target.value)}
                                 disabled={isLoading}
                                 placeholder="Type your technical answer here..."
-                                className="w-full h-56 bg-white/5 border border-white/10 rounded-2xl p-6 text-lg text-gray-200 focus:outline-none focus:border-primary-500 transition-all disabled:opacity-50 resize-none font-sans"
+                                className="w-full h-40 md:h-56 bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-base md:text-lg text-gray-200 focus:outline-none focus:border-primary-500 transition-all disabled:opacity-50 resize-none font-sans"
                             />
-                            <div className="flex justify-between items-center">
-                                <button onClick={handleQuit} disabled={isLoading} className="text-xs font-bold text-gray-500 hover:text-red-400 uppercase tracking-widest py-2 px-4 rounded-lg hover:bg-red-500/5 transition-all">End Session</button>
+                            <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
+                                <button onClick={handleQuit} disabled={isLoading} className="text-xs font-bold text-gray-500 hover:text-red-400 uppercase tracking-widest py-2 px-4 rounded-lg hover:bg-red-500/5 transition-all w-full md:w-auto">End Session</button>
                                 <button
                                     onClick={handleSubmit}
                                     disabled={!answer.trim() || isLoading}
@@ -442,23 +442,23 @@ function InterviewContent() {
                         animate={{ opacity: 1, y: 0 }}
                         className="space-y-8"
                     >
-                        <div className="glass p-10 bg-gradient-to-br from-primary-900/10 to-black rounded-3xl border border-white/5 relative overflow-hidden">
+                        <div className="glass p-6 md:p-10 bg-gradient-to-br from-primary-900/10 to-black rounded-3xl border border-white/5 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/10 rounded-full blur-[100px] -mr-32 -mt-32" />
-                            <div className="flex justify-between items-center relative z-10">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-6">
                                 <div>
                                     <div className="flex items-center gap-3 mb-2">
                                         <button onClick={() => setStep('idle')} className="p-2 hover:bg-white/10 rounded-xl transition-all">
                                             <ArrowLeft size={18} />
                                         </button>
-                                        <h2 className="text-3xl font-black tracking-tight">{report?.analytics?.config?.topic || 'Performance Report'}</h2>
+                                        <h2 className="text-2xl md:text-3xl font-black tracking-tight">{report?.analytics?.config?.topic || 'Performance Report'}</h2>
                                     </div>
-                                    <p className="text-gray-500 text-sm font-medium px-10 flex items-center gap-2">
+                                    <p className="text-gray-500 text-sm font-medium px-4 md:px-10 flex items-center gap-2">
                                         {report?.analytics?.total_questions || 0} Questions Answered • {report?.interview_id?.slice(0, 8)}
                                     </p>
                                 </div>
-                                <div className="text-right">
+                                <div className="text-left md:text-right px-4 md:px-0">
                                     <span className="text-[10px] font-black uppercase text-primary-400 tracking-[0.2em]">Readiness Score</span>
-                                    <p className="text-7xl font-black tracking-tighter text-white">{report?.readiness_score || '0'}%</p>
+                                    <p className="text-6xl md:text-7xl font-black tracking-tighter text-white">{report?.readiness_score || '0'}%</p>
                                 </div>
                             </div>
                         </div>
