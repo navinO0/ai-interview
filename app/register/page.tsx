@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import authService from '../services/authService'
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') ?? 'http://localhost:3001';
+
 export default function RegisterPage() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -118,7 +120,7 @@ export default function RegisterPage() {
 
                 <div className="mt-8 pt-8 border-t border-white/5 space-y-4">
                     <button
-                        onClick={() => window.location.href = 'http://localhost:3001/api/auth/google'}
+                        onClick={() => window.location.href = `${API_URL}/api/auth/google`}
                         type="button"
                         className="w-full py-3.5 glass flex items-center justify-center space-x-3 text-sm font-medium hover:bg-white/10 transition-all"
                     >

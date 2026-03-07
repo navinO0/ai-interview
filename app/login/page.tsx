@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Terminal, Github, Mail, Lock, ArrowRight } from 'lucide-react'
+import { Terminal, Mail, Lock, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import authService from '../services/authService'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') ?? 'http://localhost:3001';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('')
@@ -103,7 +105,7 @@ export default function LoginPage() {
 
                 <div className="mt-8 pt-8 border-t border-white/5 space-y-4">
                     <button
-                        onClick={() => window.location.href = 'http://localhost:3001/api/auth/google'}
+                        onClick={() => window.location.href = `${API_URL}/api/auth/google`}
                         type="button"
                         className="w-full py-3.5 glass flex items-center justify-center space-x-3 text-sm font-medium hover:bg-white/10 transition-all"
                     >
@@ -119,8 +121,8 @@ export default function LoginPage() {
                                 <path fill="#4285F4" d="M48 48L17 24l-4-3 35-10z" />
                             </g>
                         </svg>
-                        <span>Continue with Google</span>+
-                        
+                        <span>Continue with Google</span>
+
                     </button>
 
                     <p className="text-center text-sm text-gray-500">

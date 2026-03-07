@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTheme, Theme } from '../context/ThemeContext'
 import { motion, AnimatePresence } from 'framer-motion'
+import Cookies from 'js-cookie'
 
 import Breadcrumbs from '../../components/layout/Breadcrumbs'
 
@@ -45,7 +46,10 @@ export default function DashboardLayout({
     const closeSidebar = () => setIsSidebarOpen(false)
 
     const handleLogout = () => {
+        // Clear both cookie (read by middleware) and localStorage (client fallback)
+        Cookies.remove('token')
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         router.push('/login')
     }
 
