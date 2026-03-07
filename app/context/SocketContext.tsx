@@ -19,6 +19,11 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     const [isConnected, setIsConnected] = useState(false)
 
     useEffect(() => {
+        if (!config.enableSocket) {
+            console.log('[Socket] Socket is disabled via configuration');
+            return;
+        }
+
         const userStr = localStorage.getItem('user');
         if (!userStr) return;
 
