@@ -4,65 +4,144 @@
 
 :root {
   --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-glass: rgba(255, 255, 255, 0.05);
-  --bg-glass-hover: rgba(255, 255, 255, 0.10);
-  --border-color: rgba(255, 255, 255, 0.10);
+  --bg-secondary: #050505;
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-glass-hover: rgba(255, 255, 255, 0.07);
+  --border-color: rgba(255, 255, 255, 0.08);
   --text-primary: #ffffff;
-  --text-secondary: #9ca3af;
+  --text-secondary: #a1a1aa;
+  --primary-rgb: 14, 165, 233;
   --accent-primary: #0ea5e9;
-  --accent-secondary: #0284c7;
-  --accent-glow: rgba(14, 165, 233, 0.2);
+  --accent-secondary: #6366f1;
 }
 
-body {
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+@layer base {
+  body {
+    @apply antialiased selection:bg-primary-500/30 selection:text-white;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
 
-.glass {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.glass:hover {
-  background: var(--bg-glass-hover);
-}
-
-/* Theme: Light */
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-glass: rgba(0,0,0,0.04);
-  --bg-glass-hover: rgba(0,0,0,0.08);
-  --border-color: rgba(0,0,0,0.10);
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --accent-primary: #0ea5e9;
-  --accent-secondary: #0284c7;
-  --accent-glow: rgba(14,165,233,0.15);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 999px; }
-
-/* Mobile Typography Optimization */
-@media (max-width: 640px) {
-  html {
-    font-size: 14px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tight;
   }
 }
 
-@media (max-width: 400px) {
-  html {
-    font-size: 12px;
+@layer components {
+  .glass {
+    @apply border backdrop-blur-2xl transition-all duration-300;
+    background: var(--bg-glass);
+    border-color: var(--border-color);
+    border-radius: 24px;
   }
+
+  .glass-hover {
+    @apply hover:bg-[var(--bg-glass-hover)];
+  }
+
+  .premium-gradient-text {
+    @apply bg-gradient-to-br from-white via-white to-white/40 bg-clip-text text-transparent;
+  }
+
+  .aurora-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: -20;
+    background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.05), transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.05), transparent 40%);
+  }
+}
+
+/* Custom Keyframe Animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+  animation: shimmer 2s infinite;
+}
+
+/* Scrollbar Optimization */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Dash Styling */
+.tracking-tightest {
+  letter-spacing: -0.05em;
 }

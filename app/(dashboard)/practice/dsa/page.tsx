@@ -101,8 +101,8 @@ function DSAPracticeContent() {
                 const modelName = errorMsg.split(':')[1] || 'model';
                 toast((t) => (
                     <div className="flex flex-col gap-3">
-                        <p className="font-bold text-sm text-primary-400">Model "{modelName}" not found.</p>
-                        <p className="text-xs text-gray-500">Ollama needs to install this model to continue. (2-4GB average)</p>
+                        <p className="font-bold text-sm text-primary">Model "{modelName}" not found.</p>
+                        <p className="text-xs text-muted">Ollama needs to install this model to continue. (2-4GB average)</p>
                         <div className="flex gap-2">
                             <button
                                 onClick={async () => {
@@ -121,7 +121,7 @@ function DSAPracticeContent() {
                             </button>
                             <button
                                 onClick={() => toast.dismiss(t.id)}
-                                className="px-3 py-1 bg-white/10 text-gray-400 rounded-lg text-xs font-bold hover:bg-white/20"
+                                className="px-3 py-1 bg-[var(--bg-glass)] text-muted rounded-lg text-xs font-bold hover:bg-white/20"
                             >
                                 Cancel
                             </button>
@@ -168,27 +168,27 @@ function DSAPracticeContent() {
             {step === 'config' && (
                 <motion.div
                     key="config"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, y: -20 }}
                     className="glass p-10 rounded-3xl space-y-8"
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-4">
-                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Focus Area</label>
+                            <label className="text-xs font-bold uppercase tracking-widest text-muted">Focus Area</label>
                             <input
                                 value={config.topic}
                                 onChange={e => setConfig({ ...config, topic: e.target.value })}
-                                className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-5 outline-none focus:border-primary-500 transition-all font-medium text-white"
+                                className="w-full h-14 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-2xl px-5 outline-none focus:border-primary-500 transition-all font-medium text-primary"
                                 placeholder="e.g. Async/Await, Databases, API Safety"
                             />
                         </div>
                         <div className="space-y-4">
-                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Programming Language</label>
+                            <label className="text-xs font-bold uppercase tracking-widest text-muted">Programming Language</label>
                             <select
                                 value={config.language}
                                 onChange={e => setConfig({ ...config, language: e.target.value })}
-                                className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-5 outline-none focus:border-primary-500 appearance-none bg-no-repeat bg-[right_1.25rem_center] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlsNiA2IDYtNiIvPjwvc3ZnPg==')]"
+                                className="w-full h-14 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-2xl px-5 outline-none focus:border-primary-500 appearance-none bg-no-repeat bg-[right_1.25rem_center] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlsNiA2IDYtNiIvPjwvc3ZnPg==')] text-primary"
                             >
                                 {['TypeScript', 'JavaScript', 'Python', 'Go', 'Java', 'C++'].map(lang => (
                                     <option key={lang} value={lang} className="bg-black text-white">{lang}</option>
@@ -196,11 +196,11 @@ function DSAPracticeContent() {
                             </select>
                         </div>
                         <div className="space-y-4">
-                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Competency Level</label>
+                            <label className="text-xs font-bold uppercase tracking-widest text-muted">Competency Level</label>
                             <select
                                 value={config.difficulty}
                                 onChange={e => setConfig({ ...config, difficulty: e.target.value })}
-                                className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-5 outline-none focus:border-primary-500 appearance-none bg-no-repeat bg-[right_1.25rem_center] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlsNiA2IDYtNiIvPjwvc3ZnPg==')]"
+                                className="w-full h-14 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-2xl px-5 outline-none focus:border-primary-500 appearance-none bg-no-repeat bg-[right_1.25rem_center] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDlsNiA2IDYtNiIvPjwvc3ZnPg==')] text-primary"
                             >
                                 {['Beginner', 'Easy', 'Medium', 'Hard', 'Professional', 'Expert'].map(d => (
                                     <option key={d} value={d} className="bg-black text-white">{d}</option>
@@ -223,12 +223,19 @@ function DSAPracticeContent() {
             {step === 'active' && challenges.length > 0 && (
                 <motion.div
                     key="active"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
                     className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-250px)]"
                 >
                     <div className="space-y-6 flex flex-col h-full overflow-hidden">
-                        <div id="problem-statement" className="glass p-6 rounded-3xl flex-1 overflow-y-auto">
+                        <motion.div
+                            id="problem-statement"
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="glass p-6 rounded-3xl flex-1 overflow-y-auto"
+                        >
                             <div className="flex items-center space-x-2 text-primary-400 font-bold uppercase text-[10px] mb-4">
                                 <Code size={14} />
                                 <span>Problem Statement</span>
@@ -238,34 +245,42 @@ function DSAPracticeContent() {
                                 <ReactMarkdown>{challenges[currentIndex].question_text}</ReactMarkdown>
                             </div>
 
-                            {feedback && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className={`mt-8 p-6 rounded-2xl border ${feedback.success ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}
-                                >
-                                    <div className="flex items-center font-bold mb-2">
-                                        {feedback.success ? <CheckCircle size={18} className="mr-2" /> : <Terminal size={18} className="mr-2" />}
-                                        {feedback.success ? 'Accepted!' : 'Wrong Answer or Error'}
-                                    </div>
-                                    <p className="text-sm opacity-90">{feedback.feedback}</p>
-                                    <button
-                                        onClick={nextChallenge}
-                                        className="mt-4 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-xs font-bold transition-all"
+                            <AnimatePresence>
+                                {feedback && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10, height: 0 }}
+                                        animate={{ opacity: 1, y: 0, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className={`mt-8 p-6 rounded-2xl border ${feedback.success ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}
                                     >
-                                        {currentIndex === challenges.length - 1 ? 'Finish Practice' : 'Next Problem'}
-                                    </button>
-                                </motion.div>
-                            )}
-                        </div>
+                                        <div className="flex items-center font-bold mb-2">
+                                            {feedback.success ? <CheckCircle size={18} className="mr-2" /> : <Terminal size={18} className="mr-2" />}
+                                            {feedback.success ? 'Accepted!' : 'Wrong Answer or Error'}
+                                        </div>
+                                        <p className="text-sm opacity-90">{feedback.feedback}</p>
+                                        <button
+                                            onClick={nextChallenge}
+                                            className="mt-4 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg text-xs font-bold transition-all"
+                                        >
+                                            {currentIndex === challenges.length - 1 ? 'Finish Practice' : 'Next Problem'}
+                                        </button>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
                     </div>
 
-                    <div className="flex flex-col space-y-4 h-full">
+                    <motion.div
+                        initial={{ x: 20, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex flex-col space-y-4 h-full"
+                    >
                         <div className="flex-1 relative bg-black/40 rounded-3xl border border-white/5 overflow-hidden flex flex-col group">
-                            <div className="absolute inset-x-0 top-0 px-6 py-4 border-b border-white/5 bg-white/5 flex items-center justify-between z-10 pointer-events-none">
+                            <div className="absolute inset-x-0 top-0 px-6 py-4 border-b border-[var(--border-color)] bg-[var(--bg-glass)] flex items-center justify-between z-10 pointer-events-none">
                                 <div className="flex items-center space-x-2">
-                                    <Terminal size={14} className="text-gray-500" />
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Code Editor — solution.{config.language === 'Python' ? 'py' : 'ts'}</span>
+                                    <Terminal size={14} className="text-muted" />
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted">Code Editor — solution.{config.language === 'Python' ? 'py' : 'ts'}</span>
                                 </div>
                             </div>
 
@@ -292,8 +307,8 @@ function DSAPracticeContent() {
                             </div>
 
                             {/* Execution Console */}
-                            <div className="h-48 bg-[#1e1e1e] border-t border-white/10 flex flex-col relative z-20">
-                                <div className="px-4 py-2 border-b border-white/5 bg-black/20 flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest">
+                            <div className="h-48 bg-[#1e1e1e] border-t border-[var(--border-color)] flex flex-col relative z-20">
+                                <div className="px-4 py-2 border-b border-[var(--border-color)] bg-black/20 flex items-center justify-between text-xs font-bold text-muted uppercase tracking-widest">
                                     <span>Console Output</span>
                                     {isRunning && <RefreshCw size={12} className="animate-spin text-primary-500" />}
                                 </div>
@@ -329,7 +344,7 @@ function DSAPracticeContent() {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </motion.div>
             )}
 
@@ -345,13 +360,13 @@ function DSAPracticeContent() {
                     </div>
                     <div>
                         <h2 className="text-3xl font-black mb-2">Practice Complete!</h2>
-                        <p className="text-gray-400 max-w-sm mx-auto">You've successfully solved all the algorithms in this session.</p>
+                        <p className="text-muted max-w-sm mx-auto">You've successfully solved all the algorithms in this session.</p>
                     </div>
 
                     <div className="flex justify-center space-x-4">
                         <button
                             onClick={() => setStep('config')}
-                            className="h-14 px-8 bg-white/5 hover:bg-white/10 rounded-2xl font-bold transition-all text-sm"
+                            className="h-14 px-8 bg-[var(--bg-glass)] border border-[var(--border-color)] hover:bg-white/10 rounded-2xl font-bold transition-all text-sm text-primary"
                         >
                             Practice More
                         </button>
@@ -373,17 +388,17 @@ export default function DSAPracticePage() {
         <div className="max-w-6xl mx-auto space-y-8 pb-20 h-full">
             <header className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                    <Link href="/learning-paths" className="p-2 hover:bg-white/5 rounded-full transition-colors">
+                    <Link href="/learning-paths" className="p-2 hover:bg-[var(--bg-glass)] rounded-full transition-colors text-primary">
                         <ArrowLeft size={20} />
                     </Link>
                     <div>
                         <h1 className="text-2xl font-bold flex items-center">
                             <Terminal className="mr-2 text-primary-500" size={24} /> Practice DSA
                         </h1>
-                        <p className="text-gray-400 text-sm">Solve algorithmic problems in a LeetCode-style environment.</p>
+                        <p className="text-muted text-sm">Solve algorithmic problems in a LeetCode-style environment.</p>
                     </div>
                 </div>
-                <Link href="/practice/dsa/history" className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl font-bold transition-all text-sm flex items-center">
+                <Link href="/practice/dsa/history" className="px-4 py-2 bg-[var(--bg-glass)] border border-[var(--border-color)] hover:bg-white/10 rounded-xl font-bold transition-all text-sm flex items-center text-primary">
                     <History size={16} className="mr-2 text-primary-400" /> View History
                 </Link>
             </header>
@@ -391,7 +406,7 @@ export default function DSAPracticePage() {
             <Suspense fallback={
                 <div className="glass p-20 rounded-3xl flex flex-col items-center justify-center space-y-4">
                     <RefreshCw className="animate-spin text-primary-500" size={32} />
-                    <p className="text-gray-500 font-bold animate-pulse uppercase tracking-[0.2em] text-xs">Initializing Editor Content...</p>
+                    <p className="text-muted font-bold animate-pulse uppercase tracking-[0.2em] text-xs">Initializing Editor Content...</p>
                 </div>
             }>
                 <DSAPracticeContent />

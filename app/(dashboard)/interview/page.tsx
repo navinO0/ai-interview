@@ -8,6 +8,7 @@ import interviewService from '../../services/interviewService'
 import workspaceService from '../../services/workspaceService'
 import resumeService from '../../services/resumeService'
 import ReactMarkdown from 'react-markdown'
+import Mermaid from '../../components/Mermaid'
 import toast from 'react-hot-toast'
 import { useModelDownloader } from '../../../hooks/useModelDownloader'
 
@@ -97,8 +98,8 @@ function InterviewContent() {
                 const modelName = errorMsg.split(':')[1] || 'model';
                 toast((t) => (
                     <div className="flex flex-col gap-3">
-                        <p className="font-bold text-sm">Model "{modelName}" not found.</p>
-                        <p className="text-xs text-gray-500">Would you like to install it now? (approx. 2-4GB)</p>
+                        <p className="font-bold text-sm text-primary">Model "{modelName}" not found.</p>
+                        <p className="text-xs text-muted">Would you like to install it now? (approx. 2-4GB)</p>
                         <div className="flex gap-2">
                             <button
                                 onClick={async () => {
@@ -165,7 +166,7 @@ function InterviewContent() {
                     </button>
                     <button
                         onClick={() => toast.dismiss(t.id)}
-                        className="px-3 py-1 bg-white/10 text-gray-400 rounded-lg text-xs font-bold"
+                        className="px-3 py-1 bg-[var(--bg-glass)] text-muted rounded-lg text-xs font-bold"
                     >
                         Stay
                     </button>
@@ -217,8 +218,8 @@ function InterviewContent() {
                             <div className="w-20 h-20 bg-primary-600/20 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8">
                                 <Play className="text-primary-500 fill-primary-500" size={32} />
                             </div>
-                            <h1 className="text-3xl md:text-4xl font-black mb-4 tracking-tight">Adaptive Interview Prep</h1>
-                            <p className="text-gray-400 mb-8 md:mb-10 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
+                            <h1 className="text-3xl md:text-4xl font-black mb-4 tracking-tight text-primary">Adaptive Interview Prep</h1>
+                            <p className="text-muted mb-8 md:mb-10 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
                                 Real-time AI evaluation using context from your resume, learner level, and performance.
                             </p>
                             <button
@@ -239,15 +240,15 @@ function InterviewContent() {
                                     <div key={s.id} onClick={() => handleViewReport(s.id)} className="glass p-5 rounded-2xl border border-white/5 hover:border-primary-500/30 cursor-pointer transition-all group">
                                         <div className="flex justify-between items-start mb-3">
                                             <div>
-                                                <h3 className="font-bold text-gray-200 group-hover:text-primary-400 transition-colors">{s.topic}</h3>
-                                                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{s.role} • {s.difficulty}</p>
+                                                <h3 className="font-bold text-secondary group-hover:text-primary-400 transition-colors">{s.topic}</h3>
+                                                <p className="text-[10px] text-muted font-bold uppercase tracking-widest">{s.role} • {s.difficulty}</p>
                                             </div>
                                             <div className="text-right">
                                                 <div className="text-lg font-black text-gray-300">{s.readiness_score}%</div>
                                                 <div className="text-[8px] font-bold text-gray-600 uppercase">Score</div>
                                             </div>
                                         </div>
-                                        <div className="flex items-center justify-between text-[10px] text-gray-600">
+                                        <div className="flex items-center justify-between text-[10px] text-muted">
                                             <span className="flex items-center gap-1"><Clock size={10} /> {formatTime(s.created_at)}</span>
                                             <span className="flex items-center gap-1 font-bold text-primary-500/50 uppercase tracking-widest">Report <ChevronRight size={10} /></span>
                                         </div>
@@ -274,42 +275,42 @@ function InterviewContent() {
                         <div className="space-y-4 md:space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Topic Area</label>
+                                    <label className="text-xs font-bold text-muted uppercase tracking-widest">Topic Area</label>
                                     <input
                                         type="text"
                                         value={config.topic}
                                         onChange={(e) => setConfig({ ...config, topic: e.target.value })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium"
+                                        className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium text-primary"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Learner Level</label>
+                                    <label className="text-xs font-bold text-muted uppercase tracking-widest">Learner Level</label>
                                     <div className="relative">
-                                        <BrainCircuit size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                                        <BrainCircuit size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" />
                                         <select
                                             value={config.learner_level}
                                             onChange={(e) => setConfig({ ...config, learner_level: e.target.value })}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 md:py-4 text-sm md:text-base focus:border-primary-500 outline-none appearance-none font-medium"
+                                            className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl pl-10 pr-10 py-3 md:py-4 text-sm md:text-base focus:border-primary-500 outline-none appearance-none font-medium text-primary"
                                         >
                                             {learnerLevels.map(l => (
-                                                <option key={l} value={l} className="bg-black text-white">{l}</option>
+                                                <option key={l} value={l} className="bg-secondary text-primary">{l}</option>
                                             ))}
                                         </select>
-                                        <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                                        <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted" />
                                     </div>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Target Role</label>
+                                    <label className="text-xs font-bold text-muted uppercase tracking-widest">Target Role</label>
                                     <input
                                         type="text"
                                         list="roles-list"
                                         value={config.role}
                                         onChange={(e) => setConfig({ ...config, role: e.target.value })}
                                         placeholder="Enter target role..."
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium"
+                                        className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium text-primary"
                                     />
                                     <datalist id="roles-list">
                                         {['Backend Engineer', 'Frontend Engineer', 'Fullstack Engineer', 'Mobile Developer', 'DevOps Engineer', 'Data Scientist', 'SRE', 'Security Engineer', 'Product Manager'].map(r => (
@@ -319,19 +320,19 @@ function InterviewContent() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-widest">Difficulty</label>
+                                        <label className="text-[10px] md:text-xs font-bold text-muted uppercase tracking-widest">Difficulty</label>
                                         <select
                                             value={config.difficulty}
                                             onChange={(e) => setConfig({ ...config, difficulty: e.target.value })}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium appearance-none"
+                                            className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium text-primary appearance-none"
                                         >
                                             {['Beginner', 'Medium', 'Hard', 'Expert'].map(d => (
-                                                <option key={d} value={d} className="bg-black text-white">{d}</option>
+                                                <option key={d} value={d} className="bg-secondary text-primary">{d}</option>
                                             ))}
                                         </select>
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Questions</label>
+                                        <label className="text-xs font-bold text-muted uppercase tracking-widest">Questions</label>
                                         <input
                                             type="number"
                                             value={config.numQuestions === 0 ? '' : config.numQuestions}
@@ -339,7 +340,7 @@ function InterviewContent() {
                                                 const val = e.target.value;
                                                 setConfig({ ...config, numQuestions: val === '' ? 0 : parseInt(val) })
                                             }}
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium"
+                                            className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl p-3 md:p-4 text-sm md:text-base focus:border-primary-500 outline-none font-medium text-primary"
                                             placeholder="Count"
                                         />
                                     </div>
@@ -366,12 +367,12 @@ function InterviewContent() {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Job Description (JD) — For targeted questions</label>
+                                <label className="text-xs font-bold text-muted uppercase tracking-widest">Job Description (JD) — For targeted questions</label>
                                 <textarea
                                     value={config.jd}
                                     onChange={(e) => setConfig({ ...config, jd: e.target.value })}
                                     placeholder="Paste the Job Description here to get specific questions..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 md:p-4 h-24 md:h-32 focus:border-primary-500 outline-none font-medium resize-none text-xs md:text-sm"
+                                    className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl p-3 md:p-4 h-24 md:h-32 focus:border-primary-500 outline-none font-medium resize-none text-xs md:text-sm text-primary"
                                 />
                             </div>
 
@@ -405,24 +406,24 @@ function InterviewContent() {
                         animate={{ opacity: 1, scale: 1 }}
                         className="space-y-8"
                     >
-                        <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-gray-500">
+                        <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-muted">
                             <span className="flex items-center gap-2">
                                 <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" /> Live Session
                             </span>
-                            <span>Question {currentQuestionIndex + 1} of {config.numQuestions}</span>
+                            <span className="text-muted">Question {currentQuestionIndex + 1} of {config.numQuestions}</span>
                         </div>
 
                         <div className="glass p-6 md:p-10 border-l-4 border-primary-500 rounded-3xl space-y-6 md:space-y-8 shadow-2xl">
-                            <h2 className="text-xl md:text-2xl font-bold leading-relaxed">{currentQuestion?.question_text}</h2>
+                            <h2 className="text-xl md:text-2xl font-bold leading-relaxed text-primary">{currentQuestion?.question_text}</h2>
                             <textarea
                                 value={answer}
                                 onChange={(e) => setAnswer(e.target.value)}
                                 disabled={isLoading}
                                 placeholder="Type your technical answer here..."
-                                className="w-full h-40 md:h-56 bg-white/5 border border-white/10 rounded-2xl p-4 md:p-6 text-base md:text-lg text-gray-200 focus:outline-none focus:border-primary-500 transition-all disabled:opacity-50 resize-none font-sans"
+                                className="w-full h-40 md:h-56 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-2xl p-4 md:p-6 text-base md:text-lg text-secondary focus:outline-none focus:border-primary-500 transition-all disabled:opacity-50 resize-none font-sans"
                             />
                             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
-                                <button onClick={handleQuit} disabled={isLoading} className="text-xs font-bold text-gray-500 hover:text-red-400 uppercase tracking-widest py-2 px-4 rounded-lg hover:bg-red-500/5 transition-all w-full md:w-auto">End Session</button>
+                                <button onClick={handleQuit} disabled={isLoading} className="text-xs font-bold text-muted hover:text-red-400 uppercase tracking-widest py-2 px-4 rounded-lg hover:bg-red-500/5 transition-all w-full md:w-auto">End Session</button>
                                 <button
                                     onClick={handleSubmit}
                                     disabled={!answer.trim() || isLoading}
@@ -452,13 +453,13 @@ function InterviewContent() {
                                         </button>
                                         <h2 className="text-2xl md:text-3xl font-black tracking-tight">{report?.analytics?.config?.topic || 'Performance Report'}</h2>
                                     </div>
-                                    <p className="text-gray-500 text-sm font-medium px-4 md:px-10 flex items-center gap-2">
+                                    <p className="text-muted text-sm font-medium px-4 md:px-10 flex items-center gap-2">
                                         {report?.analytics?.total_questions || 0} Questions Answered • {report?.interview_id?.slice(0, 8)}
                                     </p>
                                 </div>
                                 <div className="text-left md:text-right px-4 md:px-0">
                                     <span className="text-[10px] font-black uppercase text-primary-400 tracking-[0.2em]">Readiness Score</span>
-                                    <p className="text-6xl md:text-7xl font-black tracking-tighter text-white">{report?.readiness_score || '0'}%</p>
+                                    <p className="text-6xl md:text-7xl font-black tracking-tighter text-primary">{report?.readiness_score || '0'}%</p>
                                 </div>
                             </div>
                         </div>
@@ -474,8 +475,18 @@ function InterviewContent() {
                                         <Target size={14} />
                                         <span>AI Recommended Growth Path</span>
                                     </div>
-                                    <h3 className="text-2xl font-black mb-2 text-white">{report.workspaceSuggestion.title}</h3>
-                                    <p className="text-gray-400 text-sm max-w-2xl leading-relaxed">{report.workspaceSuggestion.goal}</p>
+                                    <h3 className="text-2xl font-black mb-2 text-primary">{report.workspaceSuggestion.title}</h3>
+                                    <p className="text-muted text-sm max-w-2xl leading-relaxed mb-4">{report.workspaceSuggestion.goal}</p>
+
+                                    {report.analytics?.weak_topics?.length > 0 && (
+                                        <div className="flex flex-wrap gap-2">
+                                            {report.analytics.weak_topics.map((topic: string, i: number) => (
+                                                <span key={i} className="px-2 py-1 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded flex items-center gap-1.5 text-[10px] font-bold text-muted">
+                                                    <AlertTriangle size={10} className="text-yellow-500" /> {topic}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                                 <button
                                     onClick={async () => {
@@ -509,8 +520,8 @@ function InterviewContent() {
                                             </div>
 
                                             <div className="space-y-3">
-                                                <div className="text-[10px] font-black uppercase text-gray-600 tracking-widest">Your Answer</div>
-                                                <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap bg-white/5 p-5 rounded-2xl border border-white/5 font-medium">{ans.answer_text}</p>
+                                                <div className="text-[10px] font-black uppercase text-muted tracking-widest">Your Answer</div>
+                                                <p className="text-secondary text-sm leading-relaxed whitespace-pre-wrap bg-[var(--bg-glass)] p-5 rounded-2xl border border-[var(--border-color)] font-medium">{ans.answer_text}</p>
                                             </div>
 
                                             <div className="space-y-3 border-t border-white/5 pt-6">
@@ -528,20 +539,35 @@ function InterviewContent() {
                                                             exit={{ opacity: 0, height: 0 }}
                                                             className="overflow-hidden"
                                                         >
-                                                            <div className="p-6 bg-primary-600/10 rounded-2xl border border-primary-500/20 text-gray-200 text-sm leading-relaxed prose prose-invert prose-sm max-w-none">
-                                                                <ReactMarkdown>{ans.suggested_answer}</ReactMarkdown>
+                                                            <div className="p-6 bg-primary-600/5 rounded-2xl border border-primary-500/20 text-secondary text-sm leading-relaxed prose prose-sm max-w-none" style={{ color: 'var(--prose-color)' }}>
+                                                                <ReactMarkdown
+                                                                    components={{
+                                                                        code({ node, className, children, ...props }) {
+                                                                            const match = /language-(\w+)/.exec(className || '')
+                                                                            if (match && match[1] === 'mermaid') {
+                                                                                return <Mermaid chart={String(children).replace(/\n$/, '')} />
+                                                                            }
+                                                                            if (match && match[1] === 'svg') {
+                                                                                return <div className="flex justify-center my-4 bg-white/5 p-4 rounded-xl overflow-auto" dangerouslySetInnerHTML={{ __html: String(children) }} />
+                                                                            }
+                                                                            return <code className={className} {...props}>{children}</code>
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    {ans.suggested_answer}
+                                                                </ReactMarkdown>
                                                             </div>
                                                         </motion.div>
                                                     )}
                                                 </AnimatePresence>
                                             </div>
 
-                                            <div className="bg-white/2 p-5 rounded-2xl border border-white/5 space-y-2">
-                                                <div className="text-[10px] font-black uppercase text-gray-600 tracking-widest">AI Feedback</div>
-                                                <p className="text-sm text-gray-400 italic font-medium leading-relaxed">"{ans.feedback}"</p>
+                                            <div className="bg-[var(--bg-glass)] p-5 rounded-2xl border border-[var(--border-color)] space-y-2">
+                                                <div className="text-[10px] font-black uppercase text-muted tracking-widest">AI Feedback</div>
+                                                <p className="text-sm text-secondary italic font-medium leading-relaxed">"{ans.feedback}"</p>
                                                 <div className="flex gap-1 pt-2">
                                                     {[1, 2, 3].map(dot => (
-                                                        <div key={dot} className={`h-1.5 flex-1 rounded-full ${dot <= ans.score ? 'bg-primary-500' : 'bg-white/5'}`} />
+                                                        <div key={dot} className={`h-1.5 flex-1 rounded-full ${dot <= ans.score ? 'bg-primary-500' : 'bg-muted/10'}`} />
                                                     ))}
                                                 </div>
                                             </div>

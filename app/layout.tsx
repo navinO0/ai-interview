@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import AITutor from '../components/AITutor'
 import { ThemeProvider } from './context/ThemeContext'
+import { SocketProvider } from './context/SocketContext'
 import { WorkspaceProvider } from './context/WorkspaceContext'
 import AIConfigPopup from '../components/AIConfigPopup'
 import SessionExpiredModal from './components/SessionExpiredModal'
@@ -9,6 +10,7 @@ import SessionExpiredModal from './components/SessionExpiredModal'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: import('next').Metadata = {
+    metadataBase: new URL('http://localhost:3000'),
     title: {
         template: '%s | AI Interview Coach',
         default: 'AI Interview Coach — Master Any Role',
@@ -38,6 +40,7 @@ export const metadata: import('next').Metadata = {
 }
 
 import { Toaster } from 'react-hot-toast';
+import PageWrapper from './components/PageWrapper'
 
 export default function RootLayout({
     children,
@@ -48,13 +51,17 @@ export default function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <ThemeProvider>
-                    <WorkspaceProvider>
-                        <Toaster position="top-right" />
-                        {children}
-                        <AITutor />
-                        <AIConfigPopup />
-                        <SessionExpiredModal />
-                    </WorkspaceProvider>
+                    <SocketProvider>
+                        <WorkspaceProvider>
+                            <Toaster position="top-right" />
+                            <PageWrapper>
+                                {children}
+                            </PageWrapper>
+                            <AITutor />
+                            <AIConfigPopup />
+                            <SessionExpiredModal />
+                        </WorkspaceProvider>
+                    </SocketProvider>
                 </ThemeProvider>
             </body>
         </html>

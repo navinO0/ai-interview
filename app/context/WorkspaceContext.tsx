@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import api from '../services/api'
+import { useSocket } from './SocketContext'
 
 export type Difficulty = 'Beginner' | 'Easy' | 'Medium' | 'Hard' | 'Professional' | 'Expert'
 
@@ -127,6 +128,43 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
         fetchWorkspaces()
     }, [])
+
+    // WebSocket Integration using central SocketContext
+    const { socket } = useSocket();
+
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleProgress = (data: { workspaceId: string; progress: number; status: string }) => {
+            setWorkspaces(prev => prev.map(ws =>
+                ws.id === data.workspaceId
+                    ? { ...ws, generationProgress: data.progress, status: data.status as any }
+                    : ws
+            ));
+        };
+
+        const handleCompleted = (data: { workspaceId: string; workspace: any }) => {
+            setWorkspaces(prev => prev.map(ws =>
+                ws.id === data.workspaceId ? mapWorkspace(data.workspace) : ws
+            ));
+        };
+
+        const handleFailed = (data: { workspaceId: string; error: string }) => {
+            setWorkspaces(prev => prev.map(ws =>
+                ws.id === data.workspaceId ? { ...ws, status: 'failed', errorLog: data.error } : ws
+            ));
+        };
+
+        socket.on('roadmap:progress', handleProgress);
+        socket.on('roadmap:completed', handleCompleted);
+        socket.on('roadmap:failed', handleFailed);
+
+        return () => {
+            socket.off('roadmap:progress', handleProgress);
+            socket.off('roadmap:completed', handleCompleted);
+            socket.off('roadmap:failed', handleFailed);
+        };
+    }, [socket]);
 
     async function createWorkspace({ title, goal, category, difficulty, learnerLevel, targetDays }: { title: string; goal: string; category: string; difficulty: Difficulty; learnerLevel: string; targetDays?: number }): Promise<Workspace> {
         const color = COLORS[Math.floor(Math.random() * COLORS.length)]

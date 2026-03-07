@@ -3,7 +3,10 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, X, Send, Terminal, Sparkles } from 'lucide-react'
-import chatService from '../app/services/chatService'
+import chatService from '../app/services/authService'
+import { useSocket } from '../app/context/SocketContext'
+import ReactMarkdown from 'react-markdown'
+import Mermaid from '../app/components/Mermaid'
 
 export default function AITutor() {
     const [isOpen, setIsOpen] = useState(false)
@@ -15,42 +18,30 @@ export default function AITutor() {
     const inputRef = useRef<HTMLInputElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const chatRef = useRef<HTMLDivElement>(null)
+    const { socket } = useSocket()
+    const [streamingContent, setStreamingContent] = useState('')
 
     useEffect(() => {
-        if (isOpen) {
-            const fetchHistory = async () => {
-                try {
-                    const history = await chatService.getHistory()
-                    if (history && history.length > 0) {
-                        setChat(history)
-                    }
-                } catch (error) {
-                    console.error('Failed to fetch chat history:', error)
-                }
-            }
-            fetchHistory()
-            // Auto focus
-            setTimeout(() => inputRef.current?.focus(), 100)
-        }
-    }, [isOpen])
+        if (!socket) return
 
-    // Auto scroll
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+        const handleChunk = (data: { chunk: string }) => {
+            setStreamingContent(prev => prev + data.chunk)
         }
-    }, [chat, isLoading])
 
-    // Click outside
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (chatRef.current && !chatRef.current.contains(event.target as Node) && isOpen) {
-                setIsOpen(false)
-            }
+        const handleComplete = (data: { fullText: string }) => {
+            setChat(prev => [...prev, { role: 'assistant', content: data.fullText }])
+            setStreamingContent('')
+            setIsLoading(false)
         }
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [isOpen])
+
+        socket.on('transcript:chunk', handleChunk)
+        socket.on('transcript:complete', handleComplete)
+
+        return () => {
+            socket.off('transcript:chunk', handleChunk)
+            socket.off('transcript:complete', handleComplete)
+        }
+    }, [socket])
 
     const handleSend = async () => {
         if (!message.trim() || isLoading) return
@@ -58,24 +49,7 @@ export default function AITutor() {
         setChat([...chat, userMsg])
         setMessage('')
         setIsLoading(true)
-
-        try {
-            const response = await chatService.sendMessage(message)
-            setChat(prev => [...prev, {
-                role: 'assistant',
-                content: response.content
-            }])
-        } catch (error) {
-            console.error('Failed to send message:', error)
-            setChat(prev => [...prev, {
-                role: 'assistant',
-                content: 'Sorry, I encountered an error. Please try again.'
-            }])
-        } finally {
-            setIsLoading(false)
-            // Focus back after send
-            inputRef.current?.focus()
-        }
+        setStreamingContent('') // Reset streaming content
     }
 
     return (
@@ -106,7 +80,7 @@ export default function AITutor() {
                             </div>
                             <div className="flex items-center space-x-1">
                                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Active</span>
+                                <span className="text-[10px] text-muted font-bold uppercase tracking-widest">Active</span>
                             </div>
                         </div>
 
@@ -114,13 +88,54 @@ export default function AITutor() {
                         <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
                             {chat.map((m, i) => (
                                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${m.role === 'user' ? 'bg-primary-600 text-white shadow-lg' : 'bg-white/5 text-gray-300'
+                                    <div className={`max-w-[90%] p-3 rounded-2xl text-sm ${m.role === 'user' ? 'bg-primary-600 text-white shadow-lg' : 'bg-[var(--bg-glass)] text-secondary'
                                         }`}>
-                                        {m.content}
+                                        <div className="prose prose-xs max-w-none" style={{ color: 'var(--prose-color)' }}>
+                                            <ReactMarkdown
+                                                components={{
+                                                    code({ node, className, children, ...props }) {
+                                                        const match = /language-(\w+)/.exec(className || '')
+                                                        if (match && match[1] === 'mermaid') {
+                                                            return <Mermaid chart={String(children).replace(/\n$/, '')} />
+                                                        }
+                                                        if (match && match[1] === 'svg') {
+                                                            return <div className="flex justify-center my-4 bg-[var(--bg-glass)] p-3 rounded-lg overflow-auto" dangerouslySetInnerHTML={{ __html: String(children) }} />
+                                                        }
+                                                        return <code className={className} {...props}>{children}</code>
+                                                    }
+                                                }}
+                                            >
+                                                {m.content}
+                                            </ReactMarkdown>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
-                            {isLoading && (
+                            {streamingContent && (
+                                <div className="flex justify-start">
+                                    <div className="max-w-[90%] p-3 rounded-2xl text-sm bg-[var(--bg-glass)] text-secondary border-l-2 border-primary-500">
+                                        <div className="prose prose-xs max-w-none" style={{ color: 'var(--prose-color)' }}>
+                                            <ReactMarkdown
+                                                components={{
+                                                    code({ node, className, children, ...props }) {
+                                                        const match = /language-(\w+)/.exec(className || '')
+                                                        if (match && match[1] === 'mermaid') {
+                                                            return <Mermaid chart={String(children).replace(/\n$/, '')} />
+                                                        }
+                                                        if (match && match[1] === 'svg') {
+                                                            return <div className="flex justify-center my-4 bg-[var(--bg-glass)] p-3 rounded-lg overflow-auto" dangerouslySetInnerHTML={{ __html: String(children) }} />
+                                                        }
+                                                        return <code className={className} {...props}>{children}</code>
+                                                    }
+                                                }}
+                                            >
+                                                {streamingContent}
+                                            </ReactMarkdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {isLoading && !streamingContent && (
                                 <div className="flex justify-start">
                                     <div className="bg-white/5 p-3 rounded-2xl">
                                         <div className="flex space-x-1">
@@ -144,7 +159,7 @@ export default function AITutor() {
                                     onChange={(e) => setMessage(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                                     placeholder={isLoading ? "AI is thinking..." : "Ask a question..."}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-4 pr-10 focus:outline-none focus:border-primary-500 transition-all text-sm disabled:opacity-50"
+                                    className="w-full bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-xl py-2.5 pl-4 pr-10 focus:outline-none focus:border-primary-500 transition-all text-sm text-primary disabled:opacity-50"
                                 />
                                 <button
                                     onClick={handleSend}

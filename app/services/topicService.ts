@@ -1,5 +1,21 @@
 import api from './api';
 
+export interface Chapter {
+    title: string;
+    content: string;
+}
+
+export interface TopicExplanation {
+    title: string;
+    chapters: Chapter[];
+    keyPoints: string[];
+    commonInterviewQuestions: string[];
+    useCases: string[];
+    commonMistakes: string[];
+    bestPractices: string[];
+    resources: string[];
+}
+
 export interface Topic {
     id: string;
     name: string;

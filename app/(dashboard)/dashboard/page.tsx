@@ -40,17 +40,38 @@ export default function DashboardPage() {
         }
     }
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100, damping: 12 } }
+    }
+
     return (
-        <div className="space-y-8 pb-12">
-            <header className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="space-y-8 pb-12"
+        >
+            <motion.header variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2 tracking-tight">System Overview</h1>
-                    <p className="text-gray-400 font-medium">Elevate your technical presence and career strategy.</p>
+                    <h1 className="text-3xl font-bold mb-2 tracking-tight text-primary">System Overview</h1>
+                    <p className="text-muted font-medium">Elevate your technical presence and career strategy.</p>
                 </div>
                 <Link href="/learning-paths" className="bg-primary-600 hover:bg-primary-500 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg shadow-primary-600/20 flex items-center group">
                     New Learning Plan <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Link>
-            </header>
+            </motion.header>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left Column: Stats and Chart */}
@@ -60,8 +81,15 @@ export default function DashboardPage() {
                         <div className="h-48 glass animate-pulse rounded-2xl" />
                     ) : lastWorkspace && (
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
+                            variants={itemVariants}
+                            animate={{
+                                boxShadow: [
+                                    "0 0 0px rgba(59, 130, 246, 0)",
+                                    "0 0 30px rgba(59, 130, 246, 0.2)",
+                                    "0 0 0px rgba(59, 130, 246, 0)"
+                                ]
+                            }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                             className={`relative overflow-hidden rounded-2xl p-8 bg-gradient-to-r ${lastWorkspace.color} text-white shadow-xl`}
                         >
                             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -86,7 +114,7 @@ export default function DashboardPage() {
                                 </div>
 
                                 <Link
-                                    href={`/learning-paths?id=${lastWorkspace.id}`}
+                                    href={`/learning-paths?workspaceId=${lastWorkspace.id}`}
                                     className="bg-white text-black h-16 w-16 md:h-20 md:w-20 rounded-full flex items-center justify-center hover:scale-110 transition-transform shadow-2xl group shrink-0"
                                 >
                                     <Play size={24} fill="currentColor" className="ml-1 group-hover:scale-125 transition-transform" />
@@ -100,8 +128,7 @@ export default function DashboardPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Daily Bit (Joke) */}
                         <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            variants={itemVariants}
                             className="glass p-6 relative overflow-hidden group hover:border-primary-500/50 transition-colors"
                         >
                             <div className="flex items-center justify-between mb-4">
@@ -109,9 +136,9 @@ export default function DashboardPage() {
                                     <div className="p-2 bg-yellow-500/20 rounded-lg">
                                         <Laugh className="text-yellow-500" size={18} />
                                     </div>
-                                    <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">Daily Bit</h3>
+                                    <h3 className="text-sm font-bold uppercase tracking-widest text-muted">Daily Bit</h3>
                                 </div>
-                                <span className="text-[10px] bg-white/5 px-2 py-1 rounded text-gray-500 font-bold">CRINGE</span>
+                                <span className="text-[10px] bg-primary-500/10 px-2 py-1 rounded text-muted font-bold">CRINGE</span>
                             </div>
                             <div className="min-h-[80px] flex items-center">
                                 {contentLoading ? (
@@ -120,24 +147,27 @@ export default function DashboardPage() {
                                         <div className="h-3 bg-white/5 rounded w-2/3 animate-pulse" />
                                     </div>
                                 ) : (
-                                    <p className="text-gray-200 italic font-medium leading-relaxed">
+                                    <motion.p
+                                        animate={{ y: [0, -2, 0] }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                        className="text-secondary italic font-medium leading-relaxed"
+                                    >
                                         "{dashboardContent?.joke?.content || 'Loading humor module...'}"
-                                    </p>
+                                    </motion.p>
                                 )}
                             </div>
                         </motion.div>
 
                         {/* Office Survival */}
                         <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            variants={itemVariants}
                             className="glass p-6 group hover:border-red-500/50 transition-colors"
                         >
                             <div className="flex items-center gap-2 mb-4">
                                 <div className="p-2 bg-red-500/20 rounded-lg">
                                     <ShieldAlert className="text-red-500" size={18} />
                                 </div>
-                                <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">Survival Guide</h3>
+                                <h3 className="text-sm font-bold uppercase tracking-widest text-muted">Survival Guide</h3>
                             </div>
                             <div className="space-y-3">
                                 {contentLoading ? (
@@ -146,7 +176,7 @@ export default function DashboardPage() {
                                     dashboardContent?.politicsTips?.map((tip: any, i: number) => (
                                         <div key={i} className="flex gap-3 group/tip">
                                             <div className="mt-1.5 h-1 w-1 rounded-full bg-red-500/50 group-hover/tip:bg-red-500 transition-colors" />
-                                            <p className="text-xs text-gray-400 group-hover/tip:text-gray-200 transition-colors leading-snug">{tip.content}</p>
+                                            <p className="text-xs text-secondary group-hover/tip:text-primary transition-colors leading-snug">{tip.content}</p>
                                         </div>
                                     ))
                                 )}
@@ -155,7 +185,7 @@ export default function DashboardPage() {
                     </div>
 
                     {/* Progress Chart */}
-                    <div className="glass p-8 min-h-[350px]">
+                    <motion.div variants={itemVariants} className="glass p-8 min-h-[350px]">
                         <div className="flex justify-between items-center mb-8">
                             <h3 className="text-xl font-bold tracking-tight">Performance Trend</h3>
                             <button className="text-xs font-bold uppercase tracking-widest text-primary-400 hover:text-primary-300 transition-colors">Analytics &rarr;</button>
@@ -179,22 +209,21 @@ export default function DashboardPage() {
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* Right Column: Dev Excellence & Workspaces */}
                 <div className="space-y-6">
                     {/* Dev Excellence */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        variants={itemVariants}
                         className="glass p-6 border-l-4 border-primary-500 bg-gradient-to-br from-primary-900/10 to-transparent"
                     >
                         <div className="flex items-center gap-2 mb-6">
                             <div className="p-2 bg-primary-600/20 rounded-lg">
                                 <ShieldCheck className="text-primary-500" size={18} />
                             </div>
-                            <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">Dev Excellence</h3>
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-muted">Dev Excellence</h3>
                         </div>
 
                         <div className="space-y-6">
@@ -207,7 +236,7 @@ export default function DashboardPage() {
                                     dashboardContent?.excellenceTips?.filter((t: any) => t.type === 'DO').map((tip: any, i: number) => (
                                         <div key={i} className="flex gap-3 items-start bg-green-500/5 p-3 rounded-xl border border-green-500/10 hover:bg-green-500/10 transition-colors">
                                             <CheckCircle2 className="text-green-500 shrink-0 mt-0.5" size={14} />
-                                            <p className="text-[11px] text-gray-300 font-medium leading-normal">{tip.content}</p>
+                                            <p className="text-[11px] text-secondary font-medium leading-normal">{tip.content}</p>
                                         </div>
                                     ))
                                 )}
@@ -222,7 +251,7 @@ export default function DashboardPage() {
                                     dashboardContent?.excellenceTips?.filter((t: any) => t.type === 'AVOID').map((tip: any, i: number) => (
                                         <div key={i} className="flex gap-3 items-start bg-red-500/5 p-3 rounded-xl border border-red-500/10 hover:bg-red-500/10 transition-colors">
                                             <XCircle className="text-red-500 shrink-0 mt-0.5" size={14} />
-                                            <p className="text-[11px] text-gray-300 font-medium leading-normal">{tip.content}</p>
+                                            <p className="text-[11px] text-secondary font-medium leading-normal">{tip.content}</p>
                                         </div>
                                     ))
                                 )}
@@ -231,16 +260,16 @@ export default function DashboardPage() {
                     </motion.div>
 
                     {/* Topics List */}
-                    <div className="glass p-6 overflow-hidden">
+                    <motion.div variants={itemVariants} className="glass p-6 overflow-hidden">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-lg font-bold tracking-tight">Active Paths</h3>
                             <span className="text-[10px] font-bold text-gray-500">{workspaces.length} TOTAL</span>
                         </div>
                         <div className="space-y-5 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                             {workspaces.length > 0 ? workspaces.map((ws, i) => (
-                                <Link href={`/learning-paths?id=${ws.id}`} key={ws.id} className="block group">
+                                <Link href={`/learning-paths?workspaceId=${ws.id}`} key={ws.id} className="block group">
                                     <div className="flex justify-between text-[11px] mb-2 font-bold tracking-tight">
-                                        <span className="text-gray-400 group-hover:text-white transition-colors truncate pr-4">{ws.title}</span>
+                                        <span className="text-muted group-hover:text-primary transition-colors truncate pr-4">{ws.title}</span>
                                         <span className="text-primary-400">{ws.progress}%</span>
                                     </div>
                                     <div className="h-1 bg-white/5 rounded-full overflow-hidden">
@@ -265,7 +294,7 @@ export default function DashboardPage() {
                                 Manage Paths
                             </Link>
                         )}
-                    </div>
+                    </motion.div>
                 </div>
             </div>
 
@@ -279,9 +308,7 @@ export default function DashboardPage() {
                 ].map((stat, i) => (
                     <motion.div
                         key={i}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
+                        variants={itemVariants}
                         className="glass p-4 group hover:bg-white/5 transition-all"
                     >
                         <div className="flex items-center gap-3 mb-2">
@@ -295,6 +322,6 @@ export default function DashboardPage() {
                     </motion.div>
                 ))}
             </div>
-        </div>
+        </motion.div>
     )
 }
