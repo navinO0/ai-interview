@@ -11,6 +11,8 @@ import ReactMarkdown from 'react-markdown'
 import Mermaid from '../../components/Mermaid'
 import toast from 'react-hot-toast'
 import { useModelDownloader } from '../../../hooks/useModelDownloader'
+import { useVoice } from '../../../hooks/useVoice'
+import { Mic, MicOff, Volume2, VolumeX } from 'lucide-react'
 
 function InterviewContent() {
     const searchParams = useSearchParams()
@@ -18,6 +20,7 @@ function InterviewContent() {
     const [step, setStep] = useState<'idle' | 'config' | 'active' | 'report'>('idle')
     const [sessionResults, setSessionResults] = useState<{ score: number, total: number }>({ score: 0, total: 0 })
     const { downloadModel } = useModelDownloader()
+    const { speak, isSpeaking, isListening, toggleListening, transcript, hasSupport } = useVoice()
     const [config, setConfig] = useState<any>({
         topic: 'Backend Development',
         difficulty: 'Medium',
@@ -41,6 +44,16 @@ function InterviewContent() {
     const [interviewId, setInterviewId] = useState<string | null>(null)
     const [report, setReport] = useState<any>(null)
     const [expandedAnswers, setExpandedAnswers] = useState<Record<string, boolean>>({})
+
+    useEffect(() => {
+        if (isListening && transcript) {
+            setAnswer(prev => {
+                // If the transcript is a continuation, we might want to append or replace
+                // For simplicity in a mock interview, we'll replace the text with the current transcript
+                return transcript;
+            });
+        }
+    }, [transcript, isListening]);
 
     const loadSessions = useCallback(async () => {
         try {
@@ -413,15 +426,36 @@ function InterviewContent() {
                             <span className="text-muted">Question {currentQuestionIndex + 1} of {config.numQuestions}</span>
                         </div>
 
-                        <div className="glass p-6 md:p-10 border-l-4 border-primary-500 rounded-3xl space-y-6 md:space-y-8 shadow-2xl">
-                            <h2 className="text-xl md:text-2xl font-bold leading-relaxed text-primary">{currentQuestion?.question_text}</h2>
-                            <textarea
-                                value={answer}
-                                onChange={(e) => setAnswer(e.target.value)}
-                                disabled={isLoading}
-                                placeholder="Type your technical answer here..."
-                                className="w-full h-40 md:h-56 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-2xl p-4 md:p-6 text-base md:text-lg text-secondary focus:outline-none focus:border-primary-500 transition-all disabled:opacity-50 resize-none font-sans"
-                            />
+                        <div className="glass p-6 md:p-10 border-l-4 border-primary-500 rounded-3xl space-y-6 md:space-y-8 shadow-2xl relative">
+                            <div className="flex justify-between items-start gap-4">
+                                <h2 className="text-xl md:text-2xl font-bold leading-relaxed text-primary flex-1">{currentQuestion?.question_text}</h2>
+                                <button
+                                    onClick={() => speak(currentQuestion?.question_text || '')}
+                                    className={`p-3 rounded-xl transition-all ${isSpeaking ? 'bg-primary-600 text-white animate-pulse' : 'bg-white/5 text-muted hover:text-primary-400 hover:bg-white/10'}`}
+                                    title="Read Question Aloud"
+                                >
+                                    {isSpeaking ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                                </button>
+                            </div>
+
+                            <div className="relative">
+                                <textarea
+                                    value={answer}
+                                    onChange={(e) => setAnswer(e.target.value)}
+                                    disabled={isLoading}
+                                    placeholder={isListening ? "Listening..." : "Type or speak your technical answer here..."}
+                                    className={`w-full h-40 md:h-56 bg-[var(--bg-glass)] border border-[var(--border-color)] rounded-2xl p-4 md:p-6 text-base md:text-lg text-secondary focus:outline-none focus:border-primary-500 transition-all disabled:opacity-50 resize-none font-sans ${isListening ? 'border-primary-500/50 ring-2 ring-primary-500/20' : ''}`}
+                                />
+                                {hasSupport && (
+                                    <button
+                                        onClick={toggleListening}
+                                        className={`absolute bottom-4 right-4 p-4 rounded-full transition-all shadow-lg ${isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-primary-600 text-white hover:bg-primary-500'}`}
+                                        title={isListening ? "Stop Recording" : "Record Answer"}
+                                    >
+                                        {isListening ? <MicOff size={24} /> : <Mic size={24} />}
+                                    </button>
+                                )}
+                            </div>
                             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
                                 <button onClick={handleQuit} disabled={isLoading} className="text-xs font-bold text-muted hover:text-red-400 uppercase tracking-widest py-2 px-4 rounded-lg hover:bg-red-500/5 transition-all w-full md:w-auto">End Session</button>
                                 <button
