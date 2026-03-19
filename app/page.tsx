@@ -40,8 +40,8 @@ export default function LandingPage() {
         },
         {
             icon: Network,
-            title: 'Distributed Event Bus',
-            desc: 'Powered by Kafka & BullMQ. Ensures sub-100ms latency for AI state synchronization across distributed worker nodes.',
+            title: 'High-Concurrency Engine',
+            desc: 'Built with BullMQ. Ensures reliable AI state synchronization across distributed worker nodes with zero job loss.',
             color: 'text-purple-400'
         },
         {
@@ -53,7 +53,7 @@ export default function LandingPage() {
         {
             icon: BookOpen,
             title: '30-Day Mastery Paths',
-            desc: 'Automated roadmaps batch-generated via background workers. Dynamic progress tracking with live Socket updates.',
+            desc: 'Automated roadmaps generated via background workers. Dynamic progress tracking with intelligent state management.',
             color: 'text-amber-400'
         },
         {
@@ -70,8 +70,8 @@ export default function LandingPage() {
         },
         {
             icon: Zap,
-            title: 'Real-time Analytics',
-            desc: 'Live telemetry on your performance. Watch your proficiency grow on a granular scale across 50+ technical domains.',
+            title: 'Detailed Analytics',
+            desc: 'Deep telemetry on your performance. Watch your proficiency grow on a granular scale across 50+ technical domains.',
             color: 'text-yellow-400'
         },
         {
@@ -92,13 +92,11 @@ export default function LandingPage() {
         { name: 'Next.js 14', category: 'Frontend Infrastructure', detail: 'App Router, Server Components' },
         { name: 'Node.js & TS', category: 'Backend Engine', detail: 'Express, TypeORM, Cluster Mode' },
         { name: 'PostgreSQL', category: 'Persistence Layer', detail: 'JSONB Optimizations, indexing' },
-        { name: 'Redis', category: 'Caching & Streams', detail: 'Pub/Sub, Rate Limiting' },
-        { name: 'Apache Kafka', category: 'Event Orchestration', detail: 'High Throughput, Fault Tolerance' },
+        { name: 'Redis', category: 'Caching & Queues', detail: 'Distributed Rate Limiting' },
         { name: 'BullMQ', category: 'Task Queueing', detail: 'Distributed Job Scheduling' },
         { name: 'Vector DB', category: 'AI Semantic Search', detail: 'Cosine Similarity, Embeddings' },
         { name: 'Ollama & Cloud LLMs', category: 'AI Inference', detail: 'Hybrid Model Orchestration' },
-        { name: 'Docker & Compose', category: 'Deployment', detail: 'Containerized Microservices' },
-        { name: 'Socket.io', category: 'Real-time', detail: 'Binary Streams, Low Latency' }
+        { name: 'Docker & Compose', category: 'Deployment', detail: 'Containerized Microservices' }
     ]
 
     return (
@@ -170,7 +168,7 @@ export default function LandingPage() {
                     </h1>
 
                     <p className="text-lg md:text-2xl text-gray-400 max-w-3xl mx-auto mb-16 leading-relaxed font-medium">
-                        The world’s first autonomous career orchestration platform. Leveraging <span className="text-white italic">Event-Driven AI</span> and <span className="text-white italic">Hybrid LLM Orchestration</span> to guarantee 10x faster technical mastery.
+                        The world’s first autonomous career orchestration platform. Leveraging <span className="text-white italic">Vector Intelligence</span> and <span className="text-white italic">Hybrid LLM Orchestration</span> to guarantee 10x faster technical mastery.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -280,10 +278,10 @@ export default function LandingPage() {
                                 </p>
                                 <ul className="space-y-6">
                                     {[
-                                        { title: 'Event Sourcing', desc: 'Kafka clusters ingest intent and broadcast to specialized micro-consumers for parallel pre-processing.', icon: Network },
+                                        { title: 'Task Orchestration', desc: 'Managed by BullMQ to guarantee zero job loss and reliable background processing.', icon: Network },
                                         { title: 'Vector Retrieval', desc: 'RAG engine executes high-dimensional similarity search in <15ms for hyper-contextual tutoring.', icon: Database },
                                         { title: 'Task Prioritization', desc: 'BullMQ orchestrators manage distributed workers with fair-share scheduling and priority weights.', icon: Activity },
-                                        { title: 'Binary Streaming', desc: 'Low-latency Socket.io pipes stream AI tokens directly to your UI with zero-flicker rendering.', icon: Zap }
+                                        { title: 'Adaptive Learning', desc: 'Intelligent state synchronization ensures your roadmap stays current with every interaction.', icon: Zap }
                                     ].map((step, i) => (
                                         <motion.li
                                             key={i}
@@ -313,27 +311,18 @@ export default function LandingPage() {
                                         <span className="text-gray-600 ml-2 uppercase tracking-widest text-[8px]">Orchestrator Logs — LIVE</span>
                                     </div>
                                     <pre className="whitespace-pre-wrap">
-                                        {`// Internal Event Bus Initialization...
-topic: "ai.inference.request"
-partition: user_shard_08
+                                        {`// Internal Job Initialization...
+jobType: "ai.inference.request"
+queue: "high-priority-shards"
 priority: P0_CRITICAL
 payload: {
   userId: "a9e5f9ee-2c76-4e72...",
   action: "GENERATE_ROADMAP",
   context: {
     rag_enabled: true,
-    vector_dims: 1536,
-    socket_id: "kx92..."
+    vector_dims: 1536
   }
-}
-
-// Executing RAG Semantic Search...
-MATCH (v:Vector) WHERE v.embedding <=> :query
-RESULT: 0.982 Similarity (Match Found)
-
-// Dispatching to BullMQ Worker...
-jobId: mq_8321
-status: "BROADCASTING_TO_WORKERS"`}
+}`}
                                     </pre>
                                 </div>
                                 <motion.div

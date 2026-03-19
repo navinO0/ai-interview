@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import api from '../services/api'
-import { useSocket } from './SocketContext'
 
 export type Difficulty = 'Beginner' | 'Easy' | 'Medium' | 'Hard' | 'Professional' | 'Expert'
 
@@ -129,42 +128,30 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         fetchWorkspaces()
     }, [])
 
-    // WebSocket Integration using central SocketContext
-    const { socket } = useSocket();
-
+    // Smart Polling: Automatically poll when workspaces are processing or queued
     useEffect(() => {
-        if (!socket) return;
+        const needsPolling = workspaces.some(ws => ws.status === 'processing' || ws.status === 'queued')
 
-        const handleProgress = (data: { workspaceId: string; progress: number; status: string }) => {
-            setWorkspaces(prev => prev.map(ws =>
-                ws.id === data.workspaceId
-                    ? { ...ws, generationProgress: data.progress, status: data.status as any }
-                    : ws
-            ));
-        };
+        if (!needsPolling) return
 
-        const handleCompleted = (data: { workspaceId: string; workspace: any }) => {
-            setWorkspaces(prev => prev.map(ws =>
-                ws.id === data.workspaceId ? mapWorkspace(data.workspace) : ws
-            ));
-        };
+        const intervalId = setInterval(async () => {
+            try {
+                const res = await api.get('/workspaces')
+                const updatedWorkspaces = res.data.map(mapWorkspace)
+                
+                // Only update state if there's actual changes to avoid unnecessary re-renders
+                // but for simplicity here we just update if statuses or progress changed
+                setWorkspaces(updatedWorkspaces)
+                
+                // If all reach terminal state, interval will be cleared on next effect run
+            } catch (error) {
+                console.error('Polling workspaces error:', error)
+            }
+        }, 5000)
 
-        const handleFailed = (data: { workspaceId: string; error: string }) => {
-            setWorkspaces(prev => prev.map(ws =>
-                ws.id === data.workspaceId ? { ...ws, status: 'failed', errorLog: data.error } : ws
-            ));
-        };
+        return () => clearInterval(intervalId)
+    }, [workspaces])
 
-        socket.on('roadmap:progress', handleProgress);
-        socket.on('roadmap:completed', handleCompleted);
-        socket.on('roadmap:failed', handleFailed);
-
-        return () => {
-            socket.off('roadmap:progress', handleProgress);
-            socket.off('roadmap:completed', handleCompleted);
-            socket.off('roadmap:failed', handleFailed);
-        };
-    }, [socket]);
 
     async function createWorkspace({ title, goal, category, difficulty, learnerLevel, targetDays }: { title: string; goal: string; category: string; difficulty: Difficulty; learnerLevel: string; targetDays?: number }): Promise<Workspace> {
         const color = COLORS[Math.floor(Math.random() * COLORS.length)]

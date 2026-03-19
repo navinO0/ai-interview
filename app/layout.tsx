@@ -2,7 +2,6 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import AITutor from '../components/AITutor'
 import { ThemeProvider } from './context/ThemeContext'
-import { SocketProvider } from './context/SocketContext'
 import { WorkspaceProvider } from './context/WorkspaceContext'
 import AIConfigPopup from '../components/AIConfigPopup'
 import SessionExpiredModal from './components/SessionExpiredModal'
@@ -52,18 +51,16 @@ export default function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <ThemeProvider>
-                    <SocketProvider>
-                        <WorkspaceProvider>
-                            <Toaster position="top-right" />
-                            <PageWrapper>
-                                {children}
-                            </PageWrapper>
-                            <AITutor />
-                            <AIConfigPopup />
-                            <SessionExpiredModal />
-                            <GlobalLoader />
-                        </WorkspaceProvider>
-                    </SocketProvider>
+                    <WorkspaceProvider>
+                        <Toaster position="top-right" />
+                        <PageWrapper>
+                            {children}
+                        </PageWrapper>
+                        <AITutor />
+                        <AIConfigPopup />
+                        <SessionExpiredModal />
+                        <GlobalLoader />
+                    </WorkspaceProvider>
                 </ThemeProvider>
             </body>
         </html>
