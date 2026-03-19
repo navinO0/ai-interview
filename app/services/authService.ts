@@ -39,6 +39,7 @@ const authService = {
 
     logout() {
         Cookies.remove('token');
+        localStorage.removeItem('token');
         localStorage.removeItem('user');
     }
 };

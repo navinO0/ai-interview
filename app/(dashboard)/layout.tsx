@@ -50,7 +50,7 @@ export default function DashboardLayout({
         Cookies.remove('token')
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        router.push('/login')
+        window.location.href = '/login'
     }
 
     return (

@@ -10,8 +10,25 @@ const api = axios.create({
     },
 });
 
+let activeRequests = 0;
+
+function incrementLoading() {
+    activeRequests++;
+    if (activeRequests === 1 && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('global-loading', { detail: { isLoading: true } }));
+    }
+}
+
+function decrementLoading() {
+    activeRequests = Math.max(0, activeRequests - 1);
+    if (activeRequests === 0 && typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('global-loading', { detail: { isLoading: false } }));
+    }
+}
+
 // Request interceptor to add the token
 api.interceptors.request.use((config) => {
+    incrementLoading();
     // Try Cookies first, then localStorage as fallback
     let token = Cookies.get('token');
     if (!token) {
@@ -43,15 +60,19 @@ api.interceptors.request.use((config) => {
 
 // Response interceptor for global error handling
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        decrementLoading();
+        return response;
+    },
     (error) => {
+        decrementLoading();
         const message = error.response?.data?.error?.message || error.message || 'An unexpected error occurred';
 
         // Don't toast for 401s directly, handle it contextually
         if (error.response?.status === 401) {
             Cookies.remove('token');
-            // Check if we are not on the login page or register page
-            if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register')) {
+            // Check if we are not on the login page, register page, or landing page
+            if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/register') && window.location.pathname !== '/') {
                 window.dispatchEvent(new CustomEvent('session-expired'));
             }
         } else {

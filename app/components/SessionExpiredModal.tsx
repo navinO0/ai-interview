@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Lock, ArrowRight, X } from 'lucide-react'
+import { Mail, Lock, ArrowRight, X, LogOut } from 'lucide-react'
 import authService from '../services/authService'
 import toast from 'react-hot-toast'
 
@@ -29,6 +29,12 @@ export default function SessionExpiredModal() {
         window.addEventListener('session-expired', handleSessionExpired)
         return () => window.removeEventListener('session-expired', handleSessionExpired)
     }, [])
+
+    const handleClose = () => {
+        setIsOpen(false)
+        authService.logout()
+        window.location.href = '/login'
+    }
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -57,7 +63,7 @@ export default function SessionExpiredModal() {
                     className="w-full max-w-md glass p-8 relative rounded-3xl"
                 >
                     <button
-                        onClick={() => setIsOpen(false)}
+                        onClick={handleClose}
                         className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
                     >
                         <X size={20} />
@@ -115,6 +121,14 @@ export default function SessionExpiredModal() {
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
                             ) : null}
                             Resume Session <ArrowRight size={18} className="ml-2" />
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={handleClose}
+                            className="w-full py-3.5 bg-transparent border border-white/10 hover:bg-white/5 rounded-xl font-bold flex items-center justify-center transition-all text-gray-400 hover:text-white"
+                        >
+                            Log Out Instead <LogOut size={18} className="ml-2" />
                         </button>
                     </form>
                 </motion.div>

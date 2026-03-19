@@ -6,6 +6,7 @@ import { SocketProvider } from './context/SocketContext'
 import { WorkspaceProvider } from './context/WorkspaceContext'
 import AIConfigPopup from '../components/AIConfigPopup'
 import SessionExpiredModal from './components/SessionExpiredModal'
+import GlobalLoader from './components/GlobalLoader'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -60,6 +61,7 @@ export default function RootLayout({
                             <AITutor />
                             <AIConfigPopup />
                             <SessionExpiredModal />
+                            <GlobalLoader />
                         </WorkspaceProvider>
                     </SocketProvider>
                 </ThemeProvider>
