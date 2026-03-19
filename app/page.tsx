@@ -174,7 +174,7 @@ export default function LandingPage() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                        <Link href="/register" className="group h-16 px-10 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center transition-all shadow-2xl shadow-primary-600/40">
+                        <Link href="/register" prefetch={false} className="group h-16 px-10 bg-primary-600 hover:bg-primary-500 text-white rounded-2xl font-black text-sm uppercase tracking-widest flex items-center transition-all shadow-2xl shadow-primary-600/40">
                             Initiate Protocol
                             <ArrowRight size={18} className="ml-3 group-hover:translate-x-2 transition-transform" />
                         </Link>
