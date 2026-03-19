@@ -4,7 +4,6 @@ import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, X, Send, Terminal, Sparkles } from 'lucide-react'
 import chatService from '../app/services/authService'
-import { useSocket } from '../app/context/SocketContext'
 import ReactMarkdown from 'react-markdown'
 import Mermaid from '../app/components/Mermaid'
 
@@ -18,30 +17,9 @@ export default function AITutor() {
     const inputRef = useRef<HTMLInputElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
     const chatRef = useRef<HTMLDivElement>(null)
-    const { socket } = useSocket()
     const [streamingContent, setStreamingContent] = useState('')
 
-    useEffect(() => {
-        if (!socket) return
 
-        const handleChunk = (data: { chunk: string }) => {
-            setStreamingContent(prev => prev + data.chunk)
-        }
-
-        const handleComplete = (data: { fullText: string }) => {
-            setChat(prev => [...prev, { role: 'assistant', content: data.fullText }])
-            setStreamingContent('')
-            setIsLoading(false)
-        }
-
-        socket.on('transcript:chunk', handleChunk)
-        socket.on('transcript:complete', handleComplete)
-
-        return () => {
-            socket.off('transcript:chunk', handleChunk)
-            socket.off('transcript:complete', handleComplete)
-        }
-    }, [socket])
 
     const handleSend = async () => {
         if (!message.trim() || isLoading) return
