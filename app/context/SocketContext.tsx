@@ -37,7 +37,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
         const socketUrl = config.apiUrl.replace('/api', '');
         const newSocket = io(socketUrl, {
             query: { userId },
-            transports: ['websocket']
         });
 
         newSocket.on('connect', () => {
