@@ -109,8 +109,8 @@ export default function ContentPage() {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="grid grid-cols-1 lg:grid-cols-3 gap-8"
                 >
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Blogs / Search Results */}
                     <div className="lg:col-span-2 space-y-6">
                         <h3 className="text-xl font-bold flex items-center">
@@ -184,6 +184,7 @@ export default function ContentPage() {
                                 {mode === 'ai' ? 'Save to Study Plan' : 'Generate Full Notes'}
                             </button>
                         </div>
+                    </div>
                     </div>
                 </motion.div>
             )}

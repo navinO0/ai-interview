@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, Suspense, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { Send, ChevronRight, Award, AlertTriangle, Info, Play, XCircle, Target, History, Clock, BrainCircuit, ChevronDown, CheckCircle, Lightbulb, ChevronUp, RefreshCw, ArrowLeft, Zap, Code } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import interviewService from '../../services/interviewService'
@@ -225,8 +225,8 @@ function InterviewContent() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 1.05 }}
-                        className="space-y-12"
                     >
+                        <div className="space-y-12">
                         <div className="glass p-6 md:p-12 text-center rounded-3xl">
                             <div className="w-20 h-20 bg-primary-600/20 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8">
                                 <Play className="text-primary-500 fill-primary-500" size={32} />
@@ -274,6 +274,7 @@ function InterviewContent() {
                                 )}
                             </div>
                         </div>
+                        </div>
                     </motion.div>
                 )}
 
@@ -282,8 +283,8 @@ function InterviewContent() {
                         key="config"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="glass p-5 md:p-10 max-w-2xl mx-auto rounded-2xl md:rounded-3xl"
                     >
+                        <div className="glass p-5 md:p-10 max-w-2xl mx-auto rounded-2xl md:rounded-3xl">
                         <h2 className="text-xl md:text-2xl font-black mb-6 md:mb-8">Session Configuration</h2>
                         <div className="space-y-4 md:space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -409,6 +410,7 @@ function InterviewContent() {
                                 </button>
                             </div>
                         </div>
+                        </div>
                     </motion.div>
                 )}
 
@@ -417,8 +419,8 @@ function InterviewContent() {
                         key="active"
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="space-y-8"
                     >
+                        <div className="space-y-8">
                         <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-muted">
                             <span className="flex items-center gap-2">
                                 <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" /> Live Session
@@ -467,6 +469,7 @@ function InterviewContent() {
                                 </button>
                             </div>
                         </div>
+                        </div>
                     </motion.div>
                 )}
 
@@ -475,8 +478,8 @@ function InterviewContent() {
                         key="report"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="space-y-8"
                     >
+                        <div className="space-y-8">
                         <div className="glass p-6 md:p-10 bg-gradient-to-br from-primary-900/10 to-black rounded-3xl border border-white/5 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/10 rounded-full blur-[100px] -mr-32 -mt-32" />
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-6">
@@ -502,8 +505,8 @@ function InterviewContent() {
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="glass p-8 border-l-4 border-green-500 bg-green-500/5 flex flex-col md:flex-row justify-between items-center gap-8 rounded-2xl"
                             >
+                                <div className="glass p-8 border-l-4 border-green-500 bg-green-500/5 flex flex-col md:flex-row justify-between items-center gap-8 rounded-2xl">
                                 <div className="flex-1">
                                     <div className="flex items-center space-x-2 text-green-500 font-black uppercase text-[10px] mb-3 tracking-widest">
                                         <Target size={14} />
@@ -534,6 +537,7 @@ function InterviewContent() {
                                 >
                                     Start Path
                                 </button>
+                                </div>
                             </motion.div>
                         )}
 
@@ -609,6 +613,7 @@ function InterviewContent() {
                                     </div>
                                 ))}
                             </div>
+                        </div>
                         </div>
                     </motion.div>
                 )}

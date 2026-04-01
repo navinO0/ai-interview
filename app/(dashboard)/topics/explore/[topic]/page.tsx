@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { use, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
     BookOpen, ChevronRight, MessageSquare, ArrowLeft,
@@ -17,8 +17,8 @@ import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/atom-one-dark-reasonable.css';
 import { Mermaid } from '../../../../../components/Mermaid';
 
-export default function TopicDeepDivePage({ params }: { params: { topic: string } }) {
-    const { topic } = params;
+export default function TopicDeepDivePage({ params }: { params: Promise<{ topic: string }> }) {
+    const { topic } = use(params);
     const decodedTopic = decodeURIComponent(topic);
     const [explanation, setExplanation] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
